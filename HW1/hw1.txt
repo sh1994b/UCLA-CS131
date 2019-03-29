@@ -1,0 +1,42 @@
+-exists x l
+	returns true if element x exists in list l and false otherwise
+-subset a b
+	used recursion to check each element of list a against all elements of b
+-equal_sets a b
+	uses the subset function and the fact that two sets are one another's
+	subsets iff they're equal.
+-set_union a b
+	adds elements of a to list b and returns b
+-set_intersection a b
+	checks if elements of a exist in b then adds them to the resulting list
+-set_diff a b
+	if elements of a don't exist in b adds them to the resulting list
+-computed_fixed_point
+	I was very confused as how to use eq as a predicate untill the same
+	question was asked on Piazza and I learned that eq is in fact a 
+	function and so I was able to use it correctly.
+
+*The following are helper functions for filter_reachable
+-find_nonterminals l
+	this function takes a list of T and N types and returns a list of 
+	all the nonterminal values in it.
+-nonterminals_list n l
+	using find_nonterminals returns a list of all nonterminals in list l
+	 that are associated with the nonterminal n directly (it doesn't 
+	give second and above layers)
+-remove_duplicates l
+	removes repeated elements in list l
+-reachable_nonterminals ntlist rules processed
+	takes a list of nonterminal values and a list of grammar rules and 
+	returns all the nonterminals in the rules that can be reached from
+	the ntlist nonterminals. "processed" is a list of nonterminals that
+	have already been processed and it helps avoid infiite recursion loops.
+	This function is originally called with [starting symbol] for ntlist
+	then every found nonterminal found is added to ntlist.
+-filter_reachable_rules ss rules staticrules
+	with starting symbol ss, this function gets a list of all reachable 
+	nonterminals, then goes through the list of rules (staticrules) and if
+	the left hand side of each item is a reachable nonterminal, it adds
+	that item to the resulting list (rules).
+-filter_reachable g
+	uses previous function to return the filtered grammar

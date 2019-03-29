@@ -1,0 +1,54 @@
+I didn't decide to write make_parser in terms of make_matcher or the other way
+around; the reason being I found it difficult to build the connection 
+between the two, although my code for make_parser ended up having many
+similarities to the make_matcher code. 
+However, my make_parser code is much more complex than the make_matcher code
+since I had to do multiple instances of pattern matching for the cases where 
+a terminal or a nonterminal is seen.
+In the helper functions for make_parser I return a tuple consisting of the
+tree so far and the remaining fragment; this is one of the parts that was
+different from make_matcher.
+
+My make_parser function works well on simple inputs only. 
+This is why it fails on the two test cases provided in the project 
+specifications.
+Take awkish_grammar for instance:
+When ran with the fragment ["1"; "+"; "2"] the function correctly returns 
+the following:
+
+Some
+ (Node (Expr,
+   [Node (Term, [Node (Num, [Leaf "1"])]); Node (Binop, [Leaf "+"]);
+    Node (Expr, [Node (Term, [Node (Num, [Leaf "2"])])])]))
+
+however, when this function is called with small_awk_frag, this output is
+received:
+
+Some
+ (Node (Expr,
+   [Node (Term,
+     [Node (Lvalue,
+       [Leaf "$"; Node (Expr, [Node (Term, [Node (Num, [Leaf "1"])])])])])]))
+
+when my function sees "++", it tries Term, then Lvalue, then after checking
+the rules corresponding to Lvalue it returns None, since they don't match
+with "++". 
+But the function doesn't go back to Term's rules and try [N Incrop; N Lvalue]
+and so it stops there. 
+I was unable to figure out how to fix this problem and the solutions that I've
+tried would need me to write a chunk of code for each level of the rules.
+
+If my function worked on the more complicated test cases like those provided
+in the project specifications, then it would probably still have an issue with
+left-recursive grammars, meaning grammars that look similar to the following:
+
+	| Expr ->
+		[[N Expr; N Term]]; ...
+
+because the algorithm would never reach any conclusions about the first 
+element and it would go through an infinite recursive loop. 
+The right recursive rules shouldn't cause a problem. 
+
+In addition, I am aware that make_parser is supposed to only take in the one
+grammar argument but I wasn't sure how to pattern match what my helper
+function returned without calling it with frag.

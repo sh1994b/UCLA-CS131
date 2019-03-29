@@ -1,0 +1,13 @@
+PERFORMANCE-
+	The measured speedup ratio is around 1000.
+	Meaning that for N=4, tower is 1000 times faster than plain_tower.
+	When tested with N=3, the speedup is only 2.
+
+AMBIGUOUS PUZZLE FOUND-
+	The following is the ambiguous puzzle returned by ambiguous/4:
+	
+	| ?- ambiguous(4,C,T1,T2).
+	T1 = [[1,2,3,4],[2,3,4,1],[3,4,1,2],[4,1,2,3]]
+	T2 = [[1,2,3,4],[2,3,4,1],[4,1,2,3],[3,4,1,2]]
+	(45 ms) yes
+
